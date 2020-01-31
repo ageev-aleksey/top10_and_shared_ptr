@@ -34,7 +34,7 @@ TEST(TOP10FromFile, TOP10) {
 	std::vector<int> buff;
 	f.next(buff, 1000000);
 	std::sort(buff.begin(), buff.end(), std::greater<int>{});
-	std::cout << buff[0];
+//	std::cout << buff[0];
 }
   
 
