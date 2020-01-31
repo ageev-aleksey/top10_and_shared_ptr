@@ -1,7 +1,8 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.1)
 
 project(shared_ptr)
 
+set (CMAKE_CXX_STANDARD 11)
 set(SOURCE_DIR ${CMAKE_SOURCE_DIR}/src)
 set(INCLUDE_DIR  ${CMAKE_SOURCE_DIR}/include)
 set(GTEST_DIR ${CMAKE_SOURCE_DIR}/external_lib/googletest)
