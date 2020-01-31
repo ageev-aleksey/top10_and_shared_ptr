@@ -63,8 +63,8 @@ TEST(TestExtract, ExtractTop3) {
 	std::vector<int> d{ 1, 5, 8, 4, 0, 4, 7, 48, 14, 21, 47, 99, 100, 40, 0, 1, 50, };
 	std::shared_ptr<IBlockBuffer<std::vector<int>>> ptr = std::make_shared<Buffer>(d);
 	std::vector<int> res = ExtractTopN(ptr, 3, 5);
-	std::sort(d.begin(), d.end(), std::greater<>{});
-	std::sort(res.begin(), res.end(), std::greater<>{});
+	std::sort(d.begin(), d.end(), std::greater<int>{});
+	std::sort(res.begin(), res.end(), std::greater<int>{});
 	ASSERT_EQ(res[0], d[0]);
 	ASSERT_EQ(res[1], d[1]);
 	ASSERT_EQ(res[2], d[2]);
@@ -74,8 +74,8 @@ TEST(TestExtract, ExtractTop5) {
 	std::vector<int> d{ 1, 5, 8, 4, 0, 4, 7, 48, 14, 21, 47, 99, 100, 40, 0, 1, 50, };
 	std::shared_ptr<IBlockBuffer<std::vector<int>>> ptr = std::make_shared<Buffer>(d);
 	std::vector<int> res = ExtractTopN(ptr, 5, 5);
-	std::sort(d.begin(), d.end(), std::greater<>{});
-	std::sort(res.begin(), res.end(), std::greater<>{});
+	std::sort(d.begin(), d.end(), std::greater<int>{});
+	std::sort(res.begin(), res.end(), std::greater<int>{});
 	for (size_t i = 0; i < 5; i++) {
 		ASSERT_EQ(res[i], d[i]);
 	}
@@ -87,8 +87,8 @@ TEST(TestExtract, ExtractTop10) {
 						1, 5, 8, 4, 0, 4, 7, 48, 14, 21, 47, 99, 100, 40, 0, 1, 50, };
 	std::shared_ptr<IBlockBuffer<std::vector<int>>> ptr = std::make_shared<Buffer>(d);
 	std::vector<int> res = ExtractTopN(ptr, 10, 13);
-	std::sort(d.begin(), d.end(), std::greater<>{});
-	std::sort(res.begin(), res.end(), std::greater<>{});
+	std::sort(d.begin(), d.end(), std::greater<int>{});
+	std::sort(res.begin(), res.end(), std::greater<int>{});
 	for (size_t i = 0; i < 5; i++) {
 		ASSERT_EQ(res[i], d[i]);
 	}

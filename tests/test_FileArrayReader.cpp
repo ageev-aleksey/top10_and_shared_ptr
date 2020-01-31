@@ -33,7 +33,7 @@ TEST(TOP10FromFile, TOP10) {
 	FileArrayReader f(std::move(file));
 	std::vector<int> buff;
 	f.next(buff, 1000000);
-	std::sort(buff.begin(), buff.end(), std::greater<>{});
+	std::sort(buff.begin(), buff.end(), std::greater<int>{});
 	std::cout << buff[0];
 }
   

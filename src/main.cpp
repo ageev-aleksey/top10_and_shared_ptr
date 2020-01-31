@@ -13,10 +13,10 @@ int main() {
         std::shared_ptr<IBlockBuffer<std::vector<int>>> fptr = std::make_shared<FileArrayReader >(std::move(file2));
         std::vector<int> buff;
         f1.next(buff, 1000000);
-        std::sort(buff.begin(), buff.end(), std::greater<>{});
+        std::sort(buff.begin(), buff.end(), std::greater<int>{});
         std::vector<int> res = ExtractTopN(fptr, 10, 10000);
         std::cout << "size of result array: " << res.size() << std::endl;
-        std::sort(res.begin(), res.end(), std::greater<>{});
+        std::sort(res.begin(), res.end(), std::greater<int>{});
 		std::cout << "Result: ";
         for(auto itr = res.begin(); itr !=  res.end() ; itr++) {
             std::cout << *itr << " ";
