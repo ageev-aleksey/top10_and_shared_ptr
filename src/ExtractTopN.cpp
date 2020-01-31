@@ -3,7 +3,7 @@
 #include "FileArrayReader.h"
 #include <vector>
 
-void extractTopElements(std::vector<int> &buffer, std::vector<int> &mean_heap, size_t N) {
+void extractTopElements(std::vector<int> &buffer, std::vector<int> &min_heap, size_t N) {
     std::make_heap(buffer.begin(), buffer.end());
     size_t steps = N;
     if(buffer.size() < N) {
@@ -11,8 +11,8 @@ void extractTopElements(std::vector<int> &buffer, std::vector<int> &mean_heap, s
     }
     for(size_t i = 0; i <steps; i++ ) {
         std::pop_heap(buffer.begin(), buffer.end());
-        mean_heap.push_back(buffer.back());
-		std::push_heap(mean_heap.begin(), mean_heap.end(), std::greater<int>{});
+        min_heap.push_back(buffer.back());
+		std::push_heap(min_heap.begin(), min_heap.end(), std::greater<int>{});
 		buffer.pop_back();
     }
 }
