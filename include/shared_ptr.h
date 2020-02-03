@@ -1,7 +1,7 @@
 #include <type_traits>
 #ifndef _SHARED_PTR_
 #define _SHARED_PTR_
-#include <memory>
+#include <mutex>
 
 namespace my {
 	template <typename T> class shared_ptr;
@@ -34,45 +34,78 @@ namespace my {
     public:
         shared_ptr() : val(nullptr), counter(nullptr) {}
 
-        shared_ptr(T *data) : val(data), counter(new size_t) {
-            *counter = 1;
+        shared_ptr(T *data) : val(data), counter(new counter_block) {
         }
 
         shared_ptr(const shared_ptr<T> &ptr) {
-            val = ptr.val;
-            counter = ptr.counter;
-            if (counter != nullptr) {
-                (*counter)++;
-            }
+        	if(ptr.counter != nullptr) {
+        		ptr.counter->mutex.lock();
+        		
+        		ptr.counter->value++;
+        		counter = ptr.counter;
+        		val = ptr.val;
+
+        		ptr.counter->mutex.unlock();
+           } else {
+           		counter = nullptr;
+           		val = nullptr;
+           }
         }
 
         shared_ptr(shared_ptr<T> &&ptr) {
-            val = ptr.val;
-            ptr.val = nullptr;
-            counter = ptr.counter;
-            ptr.counter = nullptr;
+        	if(ptr.counter != nullptr) {
+        		ptr.counter->mutex.lock();
+        		
+        		counter = ptr.counter;
+        		val = ptr.val;
+        		ptr.counter = nullptr;
+        		ptr.val = nullptr;
+
+        		counter->mutex.unlock();
+           } else {
+           		counter = nullptr;
+           		val = nullptr;
+           }
         }
+
 
 		~shared_ptr() {
 			reset();
 		}
         shared_ptr<T> &operator=(const shared_ptr<T> &ptr) {
             reset();
-            val = ptr.val;
-            counter = ptr.counter;
-            if (counter != nullptr) {
-                *counter += 1;
+
+            if(ptr.counter != nullptr) {
+            	ptr.counter->mutex.lock();
+
+            	ptr.counter->value++;
+        		counter = ptr.counter;
+        		val = ptr.value;
+
+            	ptr.counter->mutex.unlock();
+            } else {
+            	counter = nullptr;
+            	val = nullptr;
             }
             return *this;
-
         }
 
         shared_ptr<T> &operator=(shared_ptr<T> &&ptr) {
-            reset();
-            val = ptr.val;
-            ptr.val = nullptr;
-            counter = ptr.counter;
-            ptr.counter = nullptr;
+           reset();
+
+            if(ptr.counter != nullptr) {
+            	ptr.counter->mutex.lock();
+
+        		counter = ptr.counter;
+        		val = ptr.value;
+        		ptr.counter = nullptr;
+        		ptr.val = nullptr;
+
+            	counter->mutex.unlock();
+            } else {
+            	counter = nullptr;
+            	val = nullptr;
+            }
             return *this;
         }
 
@@ -83,12 +116,20 @@ namespace my {
         T &operator*() const {
             return *val;
         }
-
+	
 		size_t count() {
 			if (counter != nullptr) {
-				return *counter;
+				size_t tmp = 0;
+
+				counter->mutex.lock();
+
+				tmp = counter->value;
+
+				counter->mutex.unlock();
+
+				return tmp;
 			}
-			return 0;
+		return 0;
 		}
 		
 		bool empty() {
@@ -119,17 +160,38 @@ namespace my {
     private:
 		
         void reset() {
-            if (counter != nullptr) {
-                *counter -= 1;
-                if (*counter == 0) {
-                    delete val;
-                    delete counter;
-                }
-            }
+       		if(counter != nullptr) {
+
+       			counter->mutex.lock();
+
+       			if(counter->value == 1) {
+
+       				counter->mutex.unlock();
+
+       				delete val;
+       				delete counter;
+       				val = nullptr;
+       				counter = nullptr;
+
+       			}else {
+       				counter->value--;
+
+       				counter->mutex.unlock();
+       			}
+       			
+       		}
         }
 
+        struct counter_block {
+
+        	counter_block() : value(1){}
+     
+        	size_t value;
+        	std::mutex mutex;
+        };
+       
         T *val;
-        size_t *counter;
+        counter_block *counter;
     };
 
 	template<typename T>

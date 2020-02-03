@@ -73,7 +73,7 @@ TEST(ShatedPtrTest, TestTwoPointers2) {
 TEST(ShatedPtrTest, TestBoolOperations) {
 	int i = 15412;
 	std::string str("Hello, world!");
-	my::shared_ptr<TestShared> ptr1;;
+	my::shared_ptr<TestShared> ptr1;
 
 	ASSERT_TRUE(ptr1.empty());
 	ASSERT_TRUE(ptr1 == nullptr);

@@ -1,7 +1,6 @@
 #ifndef _FILE_BLOCK_READER_H_
 #define _FILE_BLOCK_READER_H_
 #include "IBlockBuffer.h"
-#include "IFileReader.h"
 #include <vector>
 #include <fstream>
 

@@ -2,6 +2,7 @@
 #include "IBlockBuffer.h"
 #include "FileArrayReader.h"
 #include <vector>
+#include <memory>
 
 void extractTopElements(std::vector<int> &buffer, std::vector<int> &min_heap, size_t N) {
     std::make_heap(buffer.begin(), buffer.end());

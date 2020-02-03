@@ -2,6 +2,14 @@ cmake_minimum_required(VERSION 3.12)
 
 project(shared_ptr)
 
+message(WARNING ${CMAKE_BUILD_TYPE})
+
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU") 
+	if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0")
+	endif()
+endif()
+
 set (CMAKE_CXX_STANDARD 11)
 set(SOURCE_DIR ${CMAKE_SOURCE_DIR}/src)
 set(INCLUDE_DIR  ${CMAKE_SOURCE_DIR}/include)
