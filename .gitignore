@@ -2,4 +2,4 @@
 cmake*/
 build/
 external_lib/
-testts/googletest/
+tests/googletest/
